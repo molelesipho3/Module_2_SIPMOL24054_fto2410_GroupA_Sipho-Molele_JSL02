@@ -1,9 +1,11 @@
+// Displays a welcome message with the current date
 const welcomeMessage = () => {
     const today = new Date().toDateString();
     document.getElementById('welcomeMessage').textContent = `🤸🏾‍♀️ Welcome to Your Fitness Tracker 🥗 Today is ${today}`;
 };
 welcomeMessage();
 
+// Displays a new workout routine
 const displayWorkoutRoutine = () => {
     const workoutInput = document.querySelector('#workoutInput').value;
     const workoutList = document.querySelector('#workoutList');
@@ -14,37 +16,36 @@ const displayWorkoutRoutine = () => {
 
 document.querySelector('#submitWorkout').addEventListener('click', displayWorkoutRoutine);
 
-// ⚠️⚠️⚠️ Lesson 3: Creating and Removing Elements ⚠️⚠️⚠️
-// Function to add new fitness goals and remove completed ones
-// NOW LET'S DEBUG TO PREVENT DUPLICATE GOALS FROM BEING SUBMITTED 🚀
-
+// Adds a new fitness goal and prevents duplicates
 const addNewGoal = () => {
-    const goalInput = document.querySelector('#goalInput').value;
-    const goalList = document.querySelector('#goalList');
-    
-    // ⚠️ Hint 1: Check for duplicates
-    // Use 'goalList' to get all existing goals and check if 'goalInput' matches any of them.
-    
-    // ⚠️ Hint 2: Prevent duplicates
-    // If a duplicate is found, display an alert to the user and don't add the goal to the list.
-    // If it's not a duplicate, proceed with adding it as a new goal.
-    
-    // ⚠️ Hint 3: Code structure
-    // You might want to wrap the duplicate-checking logic in an 'if' statement.
-    
-    // ⚠️ Hint 4: Event listener
-    // The event listener that removes goals when clicked is not related to this issue.
-    // Focus on preventing duplicates for now.
-    
+    const goalInput = document.querySelector('#goalInput').value.trim();
+    const goalList = document.querySelectorAll('#goalList li');
+
+    // Check if the input is empty
+    if (!goalInput) {
+        alert('Please enter a fitness goal!');
+        return;
+    }
+
+    // Check if the goal already exists in the list
+    const isDuplicate = Array.from(goalList).some(goal => goal.textContent === goalInput);
+    if (isDuplicate) {
+        alert('This goal already exists!');
+        return;
+    }
+
+    // Add the new goal if it's not a duplicate
     const newGoal = document.createElement('li');
     newGoal.textContent = goalInput;
-    goalList.appendChild(newGoal);
+    document.querySelector('#goalList').appendChild(newGoal);
+
+    // Clear the input field after adding the goal
+    document.querySelector('#goalInput').value = '';
 };
 
-// Add event listener to the goal submit button
 document.querySelector('#submitGoal').addEventListener('click', addNewGoal);
 
-///
+// Tracks water intake and updates the display
 let waterIntake = 0;
 const updateWaterIntake = (change) => {
     waterIntake += change;
@@ -54,6 +55,7 @@ const updateWaterIntake = (change) => {
 document.querySelector('#increaseWater').addEventListener('click', () => updateWaterIntake(1));
 document.querySelector('#decreaseWater').addEventListener('click', () => updateWaterIntake(-1));
 
+// Updates progress charts
 const updateProgressCharts = () => {
     document.querySelector('#workoutProgress').textContent = "Updated workout progress...";
     document.querySelector('#calorieIntakeProgress').textContent = "Updated calorie intake progress...";
@@ -61,12 +63,14 @@ const updateProgressCharts = () => {
 
 updateProgressCharts();
 
+// Toggles between light and dark themes
 const toggleTheme = () => {
     document.body.classList.toggle('dark-theme');
 };
 
 document.querySelector('#themeToggle').addEventListener('click', toggleTheme);
 
+// Submits the meal plan form
 const submitMealPlan = (event) => {
     event.preventDefault(); 
     alert('Meal plan submitted successfully! 🍴');
